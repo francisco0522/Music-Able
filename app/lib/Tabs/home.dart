@@ -5,7 +5,7 @@ import 'package:app/Tabs/profile.dart';
 
 class HomeTabs extends StatelessWidget {
   @override
-  String userId = "";
+  int userId;
   String userName = "";
   HomeTabs ({Key key, this.userId, this.userName}): super(key: key);
   Widget build(BuildContext context) {

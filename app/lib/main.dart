@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Expanded(child: logo(context)),
-                  Expanded(child: name(context/*, userData*/)),
+                  Expanded(child: name(context)),
                 ],
               ),
             ),
@@ -69,7 +69,7 @@ pedirDatos() async{
 }
 
 
-Widget name(BuildContext context, /*data*/) {
+Widget name(BuildContext context) {
   return Container(
     child: Padding(
       padding: const EdgeInsets.only(left: 20.0, right: 20.0),
@@ -96,23 +96,23 @@ Widget name(BuildContext context, /*data*/) {
           ),
           RaisedButton(
             onPressed: () {
-              
-              print(users[1]);
-              
-              
-             /* String username = _usernameController.text;
+              pedirDatos().then((data){   
+                print(users.length);          
+              String username = _usernameController.text;
               String password = _passwordController.text;
-              for (var x = 0; x < userData.length; x++) {
-                if (username == userData[x]["name"] &&
-                    password == userData[x]["password"]) {
-                  print('login attempt: $username with $password');
+              for (var x = 0; x < users.length; x++) {
+                String userValidator = users[x]["name"];                
+                String passValidator = users[x]["username"];
+                if (username == userValidator &&
+                    password == passValidator) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Menu(userName: userData[x]["name"], userId: userData[x]["id"], )),
+                      builder: (context) => Menu(userName: users[x]["name"], userId: users[x]["id"], )),
                   );
                 }
-              }*/
+              }
+              });
             },
             child: Text('Login'),
           )
@@ -125,7 +125,7 @@ Widget name(BuildContext context, /*data*/) {
 class Menu extends StatelessWidget {
   @override
   String userName = "";
-  String userId = "";
+  int userId;
   Menu ({Key key, this.userName, this.userId}): super(key: key);
   Widget build(BuildContext context) {
     return MaterialApp(

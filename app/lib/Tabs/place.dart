@@ -5,7 +5,7 @@ import 'package:app/Data/clubList.dart';
 var clubData = ClubData.getData;
 
 class PlaceTabs extends StatelessWidget {
-  String userId = "";
+  int userId;
   String userName = "";
   PlaceTabs ({Key key, this.userId, this.userName}): super(key: key);
   @override
