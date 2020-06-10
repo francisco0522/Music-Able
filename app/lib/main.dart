@@ -9,6 +9,7 @@ import 'package:http/http.dart';
 //var userData = UserData.getData;
 final _usernameController = TextEditingController();
 final _passwordController = TextEditingController();
+List users;
 
 void main() {
   runApp(MaterialApp(
@@ -59,12 +60,12 @@ Widget logo(BuildContext context) {
               fit: BoxFit.fill)));
 }
 
-Future<String> pedirDatos(number) async{
- var url = 'https://jsonplaceholder.typicode.com/users/' + number;
+pedirDatos() async{
+ final response =
+      await http.get('https://jsonplaceholder.typicode.com/users');
 
-     Response response = await http.get(url);
-     Map data = jsonDecode(response.body);
-     return data["name"];
+     List data = jsonDecode(response.body);
+     users = data;
 }
 
 
@@ -95,8 +96,10 @@ Widget name(BuildContext context, /*data*/) {
           ),
           RaisedButton(
             onPressed: () {
-              var name = pedirDatos("1"); 
-              print(name);
+              
+              print(users[1]);
+              
+              
              /* String username = _usernameController.text;
               String password = _passwordController.text;
               for (var x = 0; x < userData.length; x++) {
