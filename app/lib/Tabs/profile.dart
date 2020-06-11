@@ -6,7 +6,8 @@ var songsData = SongsData.getData;
 class ProfileTabs extends StatelessWidget {
   int userId;
   String userName = "";
-  ProfileTabs ({Key key, this.userId, this.userName}): super(key: key);
+  String rol = "";
+  ProfileTabs ({Key key, this.userId, this.userName, this.rol}): super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

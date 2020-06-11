@@ -7,7 +7,8 @@ class HomeTabs extends StatelessWidget {
   @override
   int userId;
   String userName = "";
-  HomeTabs ({Key key, this.userId, this.userName}): super(key: key);
+  String rol = "";
+  HomeTabs ({Key key, this.userId, this.userName, this.rol}): super(key: key);
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(

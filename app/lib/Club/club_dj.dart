@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'ListNextSongs.dart';
 
-import 'buy.dart';
-
-class Club extends StatelessWidget {
+class ClubDj extends StatelessWidget {
   var clubInfo;
-  Club ({Key key, this.clubInfo}): super(key: key);
+  ClubDj ({Key key, this.clubInfo}): super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -61,7 +60,7 @@ class Club extends StatelessWidget {
                             children: <Widget>[song()],
                           ),
                           Row(
-                            children: <Widget>[next(context)],
+                            children: <Widget>[songsList(context)],
                           ),
                         ],
                       ))
@@ -174,16 +173,15 @@ class Club extends StatelessWidget {
     );
   }
 
-
-Widget next(BuildContext context) {
-       return Container(
+  Widget songsList(BuildContext context) {
+    return Container(
       child: Column(
         children: <Widget>[
           Container(
       padding: const EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
       child: RichText(
         text: TextSpan(
-          text: "Vote or buy next song",
+          text: "See the next songs",
           style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Color.fromRGBO(255, 255, 255, 1),
@@ -195,10 +193,10 @@ Widget next(BuildContext context) {
             onPressed: () {
               Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Buy()),
+                    MaterialPageRoute(builder: (context) => ListSongs()),
                   );
             },
-            child: Text('buy or vote for song'),
+            child: Text('List of songs'),
           ),
         ],
       ),

@@ -1,3 +1,4 @@
+import 'package:app/Club/club_dj.dart';
 import 'package:flutter/material.dart';
 import 'package:app/Club/club.dart';
 import 'package:app/Data/clubList.dart';
@@ -7,7 +8,8 @@ var clubData = ClubData.getData;
 class PlaceTabs extends StatelessWidget {
   int userId;
   String userName = "";
-  PlaceTabs ({Key key, this.userId, this.userName}): super(key: key);
+  String rol = "";
+  PlaceTabs ({Key key, this.userId, this.userName, this.rol}): super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,9 +36,9 @@ class PlaceTabs extends StatelessWidget {
   Widget header(BuildContext context) {
      return Container(
           margin: const EdgeInsets.only(
-          left: 100.0, top: 50.0, bottom: 30.0, right: 100.0),
+          left: 150.0, top: 20.0, bottom: 20.0, right: 150.0),
       width: MediaQuery.of(context).size.width,
-      height: 120.0,
+      height: 50.0,
       decoration: new BoxDecoration(
           image: new DecorationImage(
               image: new AssetImage("assets/images/logo.png"),
@@ -119,10 +121,20 @@ class PlaceTabs extends StatelessWidget {
             width: double.maxFinite,
             child: new InkWell(
               onTap: () {
+                if(rol == "user")
+                {
                 Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => Club(clubInfo: clubData[index])),
                   );
+              }
+              if(rol == "dj")
+                {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ClubDj(clubInfo: clubData[index])),
+                  );
+              }
               },
               child: Card(
                 color: Color.fromRGBO(51, 54, 117, 0.3),

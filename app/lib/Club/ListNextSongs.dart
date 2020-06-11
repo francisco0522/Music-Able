@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:app/Data/songList.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+List songs;
+int leng;
 
 var songsData = SongsData.getData;
+final _songController = TextEditingController();
 
-class BuyOrVote extends StatelessWidget {
+class ListSongs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +20,6 @@ class BuyOrVote extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              searchBar(),
               list(context),
             ],
           ),
@@ -24,61 +29,22 @@ class BuyOrVote extends StatelessWidget {
   }
 }
 
- Widget searchBar() {
-    final _formKey = GlobalKey<FormState>();
-    return Container(
-      color: Color.fromRGBO(255, 255, 255, 0.8),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10.0),
-        child: Row(
-          children: <Widget>[
-            Container(
-              
-            ),
-            Expanded(
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  hintText: 'Search a Club or Genre',
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            Container(
-              child: RaisedButton(
-                color: Color.fromRGBO(0, 0, 0, 1),
-                onPressed: () {
-                  // Validate will return true if the form is valid, or false if
-                  // the form is invalid.
-                  if (_formKey.currentState.validate()) {
-                    // Process data.
-                  }
-                },
-                child: RichText(
-                  text: TextSpan(
-                    text: "Search",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                        fontSize: 18),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+musicList() async {
+  final response =
+      await http.get('http://34.229.218.28:5000/home?code=%22song%22');
+
+  List data = jsonDecode(response.body);
+  songs = data;
+  print(songs[0]['artists'][0]['name']);
+}
 
 Widget list(BuildContext context) {
+  musicList().then((data){
+    leng = songs.length;
+    });
   return Expanded(
-    child: ListView.builder(
-      itemCount: songsData.length,
+    child: ListView.builder(   
+      itemCount: leng,
       itemBuilder: (context, index) {
         return Container(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -103,7 +69,7 @@ Widget list(BuildContext context) {
                             child: Column(
                               children: <Widget>[
                                 Row(
-                                  children: <Widget>[buy(songsData[index])],
+                                  children: <Widget>[buy(songs[index])],
                                 ),
                               ],
                             ))
@@ -127,7 +93,7 @@ Widget buy(data) {
       children: <Widget>[
         RichText(
           text: TextSpan(
-            text: "${data['song']} - ",
+            text: "${data['name']} - ",
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Color.fromRGBO(255, 255, 255, 1),
@@ -136,7 +102,7 @@ Widget buy(data) {
         ),
         RichText(
           text: TextSpan(
-            text: "${data['date']}",
+            text: "${data['artists'][0]['name']}",
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Color.fromRGBO(255, 255, 255, 1),

@@ -4,12 +4,11 @@ import 'Tabs/home.dart';
 import 'Tabs/place.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 
 //var userData = UserData.getData;
 final _usernameController = TextEditingController();
 final _passwordController = TextEditingController();
-List users;
+List users, djs;
 
 void main() {
   runApp(MaterialApp(
@@ -60,13 +59,23 @@ Widget logo(BuildContext context) {
               fit: BoxFit.fill)));
 }
 
-pedirDatos() async{
+userData() async{
  final response =
       await http.get('https://jsonplaceholder.typicode.com/users');
 
      List data = jsonDecode(response.body);
      users = data;
 }
+
+djData() async{
+ final response =
+      await http.get('https://jsonplaceholder.typicode.com/users');
+
+     List data = jsonDecode(response.body);
+     djs = data;
+}
+
+
 
 
 Widget name(BuildContext context) {
@@ -96,8 +105,7 @@ Widget name(BuildContext context) {
           ),
           RaisedButton(
             onPressed: () {
-              pedirDatos().then((data){   
-                print(users.length);          
+              userData().then((data){     
               String username = _usernameController.text;
               String password = _passwordController.text;
               for (var x = 0; x < users.length; x++) {
@@ -108,7 +116,23 @@ Widget name(BuildContext context) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Menu(userName: users[x]["name"], userId: users[x]["id"], )),
+                      builder: (context) => Menu(userName: users[x]["name"], userId: users[x]["id"], rol: "user")),
+                  );
+                }
+              }
+              });
+              djData().then((data){         
+              String username = _usernameController.text;
+              String password = _passwordController.text;
+              for (var x = 0; x < djs.length; x++) {
+                String userValidator = djs[x]["email"];                
+                String passValidator = djs[x]["username"];
+                if (username == userValidator &&
+                    password == passValidator) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Menu(userName: djs[x]["name"], userId: djs[x]["id"], rol: "dj")),
                   );
                 }
               }
@@ -126,7 +150,8 @@ class Menu extends StatelessWidget {
   @override
   String userName = "";
   int userId;
-  Menu ({Key key, this.userName, this.userId}): super(key: key);
+  String rol = "";
+  Menu ({Key key, this.userName, this.userId, this.rol}): super(key: key);
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
@@ -139,9 +164,9 @@ class Menu extends StatelessWidget {
           bottomNavigationBar: menu(),
           body: new TabBarView(
             children: <Widget>[
-              new HomeTabs(userId: userId, userName: userName),
-              new PlaceTabs(userId: userId, userName: userName),
-              new ProfileTabs(userId: userId, userName: userName)
+              new HomeTabs(userId: userId, userName: userName, rol: rol),
+              new PlaceTabs(userId: userId, userName: userName, rol: rol),
+              new ProfileTabs(userId: userId, userName: userName, rol: rol)
             ],
           ),
         ),
