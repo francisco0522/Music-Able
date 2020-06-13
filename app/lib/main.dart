@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'Club/buy.dart';
 import 'Tabs/profile.dart';
 import 'Tabs/home.dart';
-import 'Tabs/place.dart';
+import 'Tabs/clubPlace.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -27,9 +28,9 @@ class MyApp extends StatelessWidget {
           resizeToAvoidBottomPadding: false,
           appBar: AppBar(
             backgroundColor: Color.fromRGBO(50, 50, 50, 1),
-            title: Text("Music-able"),
+            title: Text("Music-Able"),
           ),
-          body: Container(
+          body: SafeArea(
             child: Container(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -61,7 +62,7 @@ Widget logo(BuildContext context) {
 
 userData() async{
  final response =
-      await http.get('https://jsonplaceholder.typicode.com/users');
+      await http.get('http://34.229.218.28:5002/api/v1/users');
 
      List data = jsonDecode(response.body);
      users = data;
@@ -69,14 +70,11 @@ userData() async{
 
 djData() async{
  final response =
-      await http.get('https://jsonplaceholder.typicode.com/users');
+      await http.get('http://34.229.218.28:5002/api/v1/djs');
 
      List data = jsonDecode(response.body);
      djs = data;
 }
-
-
-
 
 Widget name(BuildContext context) {
   return Container(
@@ -105,18 +103,18 @@ Widget name(BuildContext context) {
           ),
           RaisedButton(
             onPressed: () {
-              userData().then((data){     
+              userData().then((data){
               String username = _usernameController.text;
               String password = _passwordController.text;
               for (var x = 0; x < users.length; x++) {
-                String userValidator = users[x]["name"];                
-                String passValidator = users[x]["username"];
+                String userValidator = users[x]["full_name"];                
+                String passValidator = users[x]["passwd"];
                 if (username == userValidator &&
                     password == passValidator) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Menu(userName: users[x]["name"], userId: users[x]["id"], rol: "user")),
+                      builder: (context) => Menu(userName: users[x]["full_name"], userId: users[x]["id"], rol: "user")),
                   );
                 }
               }
@@ -125,14 +123,14 @@ Widget name(BuildContext context) {
               String username = _usernameController.text;
               String password = _passwordController.text;
               for (var x = 0; x < djs.length; x++) {
-                String userValidator = djs[x]["email"];                
-                String passValidator = djs[x]["username"];
+                String userValidator = djs[x]["full_name"];                
+                String passValidator = djs[x]["passwd"];
                 if (username == userValidator &&
                     password == passValidator) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Menu(userName: djs[x]["name"], userId: djs[x]["id"], rol: "dj")),
+                      builder: (context) => Menu(userName: djs[x]["full_name"], userId: djs[x]["id"], rol: "dj")),
                   );
                 }
               }
@@ -149,7 +147,7 @@ Widget name(BuildContext context) {
 class Menu extends StatelessWidget {
   @override
   String userName = "";
-  int userId;
+  String userId;
   String rol = "";
   Menu ({Key key, this.userName, this.userId, this.rol}): super(key: key);
   Widget build(BuildContext context) {
@@ -165,7 +163,7 @@ class Menu extends StatelessWidget {
           body: new TabBarView(
             children: <Widget>[
               new HomeTabs(userId: userId, userName: userName, rol: rol),
-              new PlaceTabs(userId: userId, userName: userName, rol: rol),
+              new ClubPlace(userId: userId, userName: userName, rol: rol),
               new ProfileTabs(userId: userId, userName: userName, rol: rol)
             ],
           ),

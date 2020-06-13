@@ -1,18 +1,18 @@
+import 'package:app/Tabs/clubPlace.dart';
 import 'package:flutter/material.dart';
-import 'package:app/Tabs/place.dart';
 import 'package:app/Tabs/profile.dart';
 
 
 class HomeTabs extends StatelessWidget {
   @override
-  int userId;
+  String userId;
   String userName = "";
   String rol = "";
   HomeTabs ({Key key, this.userId, this.userName, this.rol}): super(key: key);
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Container(
+        body: SafeArea(
           child: Container(
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -84,7 +84,7 @@ class HomeTabs extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => PlaceTabs()),
+                        MaterialPageRoute(builder: (context) => ClubPlace()),
                       );
                     },
                     child: Text(

@@ -3,8 +3,7 @@ import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
-
-List songs;
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Post {
   final String title;
@@ -13,6 +12,8 @@ class Post {
 
   Post(this.title, this.description, this.link);
 }
+
+enum Pages { FIRST, SECOND, THIRD }
 
 class Buy extends StatelessWidget {
   Future<List<Post>> search(String search) async {
@@ -32,6 +33,7 @@ class Buy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -43,8 +45,8 @@ class Buy extends StatelessWidget {
                       left: 15.0, top: 10.0, bottom: 10.0),
                   child: new InkWell(
                     onTap: () {
-                      print(post.link);
-                      launch(post.link);
+                      _selectPage(context, post);
+                      //launch(post.link);
                     },
                     child: RichText(
                       text: TextSpan(
@@ -66,4 +68,60 @@ class Buy extends StatelessWidget {
     );
   }
 
+   Future _selectPage(BuildContext context, post) async {
+    switch (await showDialog(
+        context: context,
+        child: SimpleDialog(
+          title: Text('Select a option'),
+          children: <Widget>[
+            SimpleDialogOption(
+              child: Text('Listen'),
+              onPressed: () {
+                launch(post.link);
+              },
+            ),
+            SimpleDialogOption(
+              child: Text('Buy'),
+              onPressed: () {
+                showToastBuy(post.title);
+              },
+            ),
+            SimpleDialogOption(
+              child: Text('Vote'),
+              onPressed: () {
+                showToastVoted(post.title);
+              },
+            ),
+          ],
+        ))) {
+      case Pages.FIRST:
+        break;
+      case Pages.SECOND:
+        break;
+    }
+}
+
+  void showToastBuy(title) {
+        Fluttertoast.showToast(
+        msg: "You bought " + title + ", it's already on the dj's list",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 20,
+        backgroundColor: Colors.blue,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+  }
+
+  void showToastVoted(title) {
+        Fluttertoast.showToast(
+        msg: "You voted for " + title + ", it's already on the dj's list",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 20,
+        backgroundColor: Colors.blue,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+  }
 }

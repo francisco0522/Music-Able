@@ -4,7 +4,7 @@ import 'package:app/Data/songList.dart';
 var songsData = SongsData.getData;
 
 class ProfileTabs extends StatelessWidget {
-  int userId;
+  String userId;
   String userName = "";
   String rol = "";
   ProfileTabs ({Key key, this.userId, this.userName, this.rol}): super(key: key);

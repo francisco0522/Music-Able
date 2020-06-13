@@ -1,16 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'buy.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Club extends StatelessWidget {
-  var clubInfo;
-  Club ({Key key, this.clubInfo}): super(key: key);
+  String nameClub;
+  String img;
+  String songname;
+  String street;
+  String songartists;
+  String songgenre;
+  String songnamelink;
+
+  Club ({Key key, this.nameClub, this.img, this.songname, this.street, this.songartists, this.songgenre, this.songnamelink}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Container(
+        body: SafeArea(
           child: Container(
             color: Color.fromRGBO(93, 93, 93, 1),
             child: Column(
@@ -79,7 +89,7 @@ class Club extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
       child: RichText(
         text: TextSpan(
-          text: clubInfo["name"],
+          text: nameClub,
           style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Color.fromRGBO(255, 255, 255, 1),
@@ -94,7 +104,7 @@ class Club extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15.0, top:5.0, bottom: 5.0),
       child: RichText(
         text: TextSpan(
-          text: clubInfo["genre"],
+          text: songgenre,
           style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Color.fromRGBO(255, 255, 255, 1),
@@ -109,7 +119,7 @@ class Club extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
       child: RichText(
         text: TextSpan(
-          text: clubInfo["Dj"],
+          text: nameClub,
           style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Color.fromRGBO(255, 255, 255, 1),
@@ -124,12 +134,9 @@ class Club extends StatelessWidget {
       margin: const EdgeInsets.all(0),
       width: MediaQuery.of(context).size.width,
       height: 200.0,
-      decoration: new BoxDecoration(
-        image: new DecorationImage(
-            image: new AssetImage(clubInfo["image"]),
-            fit: BoxFit.fill),
-      ),
-    );
+      child: Image.network(
+          img,
+              fit: BoxFit.fill));
   }
 
    Widget adress() {
@@ -137,7 +144,7 @@ class Club extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
       child: RichText(
         text: TextSpan(
-          text: clubInfo["location"],
+          text: street,
           style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Color.fromRGBO(255, 255, 255, 1),
@@ -155,17 +162,26 @@ class Club extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
       child: RichText(
         text: TextSpan(
-          text: clubInfo["song"],
+          text: "Now playing",
           style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Color.fromRGBO(255, 255, 255, 1),
               fontSize: 20),
+          children: <TextSpan>[
+            TextSpan(
+              text: '\n' + songname + ' - ' + songartists ,
+              style: TextStyle(
+                color: Color.fromRGBO(255, 255, 255, 1),
+                fontSize: 15,
+              ),
+            ),
+          ],
         ),
       ),
     ),
      RaisedButton(
             onPressed: () {
-              
+              launch(songnamelink);
             },
             child: Text('Listen in Spotify'),
           ),
