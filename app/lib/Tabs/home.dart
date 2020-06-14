@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:app/Tabs/profile.dart';
 
 
+  enum Pages { FIRST, SECOND, }
+
+
 class HomeTabs extends StatelessWidget {
   @override
   String userId;
@@ -45,7 +48,9 @@ class HomeTabs extends StatelessWidget {
   Widget text() {
     return Container(
       height: 50.0,
-      child: RichText(
+     child: Center(
+            child: RichText(
+              textAlign: TextAlign.center,
         text: TextSpan(
           text: "Welcome " + userName,
           style: TextStyle(
@@ -54,7 +59,7 @@ class HomeTabs extends StatelessWidget {
               fontSize: 20),
         ),
       ),
-    );
+      )  );
   }
 
   Widget buttons() {
@@ -82,10 +87,7 @@ class HomeTabs extends StatelessWidget {
                   ), //       <--- BoxDecoration here
                   child: new InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ClubPlace()),
-                      );
+                      _selectClubs(context);
                     },
                     child: Text(
                       "Clubs",
@@ -104,10 +106,7 @@ class HomeTabs extends StatelessWidget {
                   ), //       <--- BoxDecoration here
                   child: new InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ProfileTabs()),
-                      );
+                      _selectProfile(context);
                     },
                     child: Text(
                       "Profile",
@@ -122,4 +121,59 @@ class HomeTabs extends StatelessWidget {
       ),
     );
   }
+
+  Future _selectClubs(BuildContext context) async {
+     return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('What is the Club section?'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('In this section you can find the clubs in Cali, know what song is playing and buy or vote for a new song'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future _selectProfile(BuildContext context) async {
+      return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('What is the Profile section?'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('In this section you can find your information and a list of songs that you bought or voted for'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
 }

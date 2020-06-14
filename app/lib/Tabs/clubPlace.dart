@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
-List songInfo;
+List songInfo, djInfo;
 
 class Place {
   final String id;
@@ -21,20 +21,6 @@ class Place {
     this.img,
   );
 }
-
-/*class Song {
-  final String id;
-  final String songname;
-  final String songgenre;
-  final String songartists;
-
-  Song(
-    this.id,
-    this.songname,
-    this.songgenre,
-    this.songartists,
-  );
-}*/
 
 class ClubPlace extends StatelessWidget {
   String userId;
@@ -60,6 +46,14 @@ class ClubPlace extends StatelessWidget {
     return data;
   }
 
+    Future<List> djData(id) async{
+ final response =
+      await http.get('http://34.229.218.28:5002/api/v1/places/' + id + '/djs');
+ List data = jsonDecode(response.body);
+ djInfo = data;
+    return data;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,15 +72,17 @@ class ClubPlace extends StatelessWidget {
         Container(
             margin: const EdgeInsets.only(
                 left: 10.0, top: 30.0, bottom: 20.0, right: 10.0),
+                child: Center(
             child: RichText(
+              textAlign: TextAlign.center,
               text: TextSpan(
-                text: "Select the club to know more information",
+                text: "Write and Select the club to know more information",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color.fromRGBO(0, 0, 0, 1),
                     fontSize: 20),
               ),
-            )),
+            ))),
         Expanded(
           child: SearchBar<Place>(
               onSearch: search,
@@ -97,35 +93,35 @@ class ClubPlace extends StatelessWidget {
                   child: new InkWell(
                     onTap: () {
                       if (rol == "user") {
-                        songsData(place.id).then((songInfo){    
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Club(  
-                                    nameClub: place.pname,
-                                   img: place.img,
-                                    songname: songInfo[0]["songname"],
-                                     street: place.pstreet,
-                                     songartists: songInfo[0]["songartists"], 
-                                    songgenre: songInfo[0]["songgenre"], 
-                                    songnamelink: songInfo[0]["songnamelink"],)),
-                        );
-                        });
-                      }
-                      if (rol == "dj") {
-                        songsData(place.id).then((songInfo){                        
+                        songsData(place.id).then((songInfo){
+                          djData(place.id).then((djInfo){                        
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => Club(
                                   nameClub: place.pname,
                                    img: place.img,
-                                    songname: songInfo[0]["songname"],
+                                    songs: songInfo,
                                      street: place.pstreet,
-                                     songartists: songInfo[0]["songartists"], 
-                                    songgenre: songInfo[0]["songgenre"], 
-                                    songnamelink: songInfo[0]["songnamelink"],)),
+                                    djname: djInfo[0]["full_name"],)),
                         );                       
+                        });
+                        });
+                      }
+                      if (rol == "dj") {
+                        songsData(place.id).then((songInfo){
+                          djData(place.id).then((djInfo){                        
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Club(
+                                  nameClub: place.pname,
+                                   img: place.img,
+                                    songs: songInfo,
+                                     street: place.pstreet,
+                                    djname: djInfo[0]["full_name"],)),
+                        );                       
+                        });
                         });
                     }
                      songInfo = [];
@@ -150,9 +146,7 @@ class ClubPlace extends StatelessWidget {
                                           image(context, place, index)
                                         ],
                                       ),
-                                      Row(
-                                        children: <Widget>[song(place, index)],
-                                      ),
+                                     
                                     ],
                                   ))
                             ],
@@ -200,18 +194,4 @@ class ClubPlace extends StatelessWidget {
         child: Image.network(post.img, fit: BoxFit.fill));
   }
 
-  Widget song(post, index) {
-    return Container(
-      padding: const EdgeInsets.only(left: 15.0, top: 10.0, bottom: 10.0),
-      child: RichText(
-        text: TextSpan(
-          text: "More info +",
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(255, 255, 255, 1),
-              fontSize: 20),
-        ),
-      ),
-    );
-  }
 }

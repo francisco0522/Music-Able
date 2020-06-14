@@ -13,7 +13,7 @@ class Post {
   Post(this.title, this.description, this.link);
 }
 
-enum Pages { FIRST, SECOND, THIRD }
+enum Pages { FIRST, SECOND }
 
 class Buy extends StatelessWidget {
   Future<List<Post>> search(String search) async {
@@ -33,6 +33,19 @@ class Buy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: new AppBar(
+        backgroundColor: Color.fromRGBO(50, 50, 50, 1),
+        title: new Text(
+          "Search a song",
+          style: new TextStyle(color: Colors.white),
+        ),
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
         child: Padding(

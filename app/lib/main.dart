@@ -114,7 +114,7 @@ Widget name(BuildContext context) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Menu(userName: users[x]["full_name"], userId: users[x]["id"], rol: "user")),
+                      builder: (context) => Menu(userName: users[x]["full_name"], userId: users[x]["id"], rol: "user",  userEmail:users[x]["email"])),
                   );
                 }
               }
@@ -130,7 +130,7 @@ Widget name(BuildContext context) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Menu(userName: djs[x]["full_name"], userId: djs[x]["id"], rol: "dj")),
+                      builder: (context) => Menu(userName: djs[x]["full_name"], userId: djs[x]["id"], rol: "dj", userEmail:djs[x]["email"] )),
                   );
                 }
               }
@@ -149,7 +149,8 @@ class Menu extends StatelessWidget {
   String userName = "";
   String userId;
   String rol = "";
-  Menu ({Key key, this.userName, this.userId, this.rol}): super(key: key);
+  String userEmail;
+  Menu ({Key key, this.userName, this.userId, this.rol, this.userEmail}): super(key: key);
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
@@ -164,7 +165,7 @@ class Menu extends StatelessWidget {
             children: <Widget>[
               new HomeTabs(userId: userId, userName: userName, rol: rol),
               new ClubPlace(userId: userId, userName: userName, rol: rol),
-              new ProfileTabs(userId: userId, userName: userName, rol: rol)
+              new ProfileTabs(userEmail: userEmail)
             ],
           ),
         ),
