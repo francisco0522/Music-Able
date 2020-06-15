@@ -23,47 +23,47 @@ This is our Portfolio Project, concluding our Foundations Year at Holberton Scho
 ## API and methods
 
 * /api/users
-<p>GET: Get all users.
-POST: Create a new user.</p>
+<p>GET: Get all users.</p>
+<p>POST: Create a new user.</p>
 
 * /api/users/<user_id>
-GET: Get an user from id.
-DELETE: Delete an user from id.
-PUT: Update an old user.
+<p>GET: Get an user from id.</p>
+<p>DELETE: Delete an user from id.</p>
+<p>PUT: Update an old user</p>
 
 * /api/places
-GET: Returns the places where dj are with the same app.
-POST: Create a new place.
+<p>GET: Returns the places where dj are with the same app.</p>
+<p>POST: Create a new place.</p>
 
 * /api/places/<place_id>
-GET: Returns the address of the place.
-DELETE: Delete a place.
-PUT: Update an old place.
+<p>GET: Returns the address of the place.</p>
+<p>DELETE: Delete a place.</p>
+<p>PUT: Update an old place.</p>
 
 * /api/DJs
-GET: Returns the data of djs.
-POST: Create a new dj.
+<p>GET: Returns the data of djs.</p>
+<p>POST: Create a new dj.</p>
 
 * /api/DJs/<dj_id>
-GET: Return the information from a specific dj.
-DELETE: Delete a dj from id.
-PUT: Update an old dj.
+<p>GET: Return the information from a specific dj.</p>
+<p>DELETE: Delete a dj from id.</p>
+<p>PUT: Update an old dj.</p>
 
 * /api/musicplaylist
-GET: Gets all songs by id.
-POST: Create a new list
+<p>GET: Gets all songs by id.</p>
+<p>POST: Create a new list</p>
 
 * /api/musicplaylist/<musicplaylist_id>
-GET: Gets a songs base form the id.
-DELETE: Deletes songs base form the id.
-PUT: Update a old songs.
+<p>GET: Gets a songs base form the id.</p>
+<p>DELETE: Deletes songs base form the id.</p>
+<p>PUT: Update a old songs.</p>
 
 * /api/musicplaylist/<musicplaylist_id>/songs
-GET: Get all the songs on a playlist
+<p>GET: Get all the songs on a playlist</p>
 
 * /api/musicplaylist/<musicplaylist_id>/songs/<songs_id>
-DELETE: Delete songs
-POST: Post new
+<p>DELETE: Delete songs</p>
+<p>POST: Post new</p>
 
 ## Mockups
 
