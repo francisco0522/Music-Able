@@ -23,8 +23,8 @@ This is our Portfolio Project, concluding our Foundations Year at Holberton Scho
 ## API and methods
 
 * /api/users
-GET: Get all users.
-POST: Create a new user.
+<p>GET: Get all users.
+POST: Create a new user.</p>
 
 * /api/users/<user_id>
 GET: Get an user from id.
