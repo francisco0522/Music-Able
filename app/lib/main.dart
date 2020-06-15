@@ -13,7 +13,7 @@ List users, djs;
 
 void main() {
   runApp(MaterialApp(
-    title: 'Navigation Basics',
+    title: 'Music-able',
     home: MyApp(),
   ));
 }

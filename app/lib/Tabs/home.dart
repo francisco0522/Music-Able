@@ -23,7 +23,7 @@ class HomeTabs extends StatelessWidget {
               children: <Widget>[
                 header(context),
                 text(),
-                buttons(),
+                buttons(context),
               ],
             ),
           ),
@@ -62,12 +62,10 @@ class HomeTabs extends StatelessWidget {
       )  );
   }
 
-  Widget buttons() {
-    return Expanded(
-      child: ListView.builder(itemBuilder: (context, index) {
-        return Container(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          height: 320,
+  Widget buttons(BuildContext context) {
+          return Container(
+          padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
+          height: 200,
           width: double.maxFinite,
             child: Row(
               mainAxisAlignment:
@@ -117,13 +115,10 @@ class HomeTabs extends StatelessWidget {
               ],
             ),
           );
-      },
-      ),
-    );
-  }
+      }
 
   Future _selectClubs(BuildContext context) async {
-     return showDialog<void>(
+    return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {

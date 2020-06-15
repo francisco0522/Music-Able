@@ -62,16 +62,7 @@ class ClubPlace extends StatelessWidget {
       children: <Widget>[
         Container(
             margin: const EdgeInsets.only(
-                left: 100.0, top: 50.0, bottom: 10.0, right: 100.0),
-            width: MediaQuery.of(context).size.width,
-            height: 120.0,
-            decoration: new BoxDecoration(
-                image: new DecorationImage(
-                    image: new AssetImage("assets/images/logo.png"),
-                    fit: BoxFit.fill))),
-        Container(
-            margin: const EdgeInsets.only(
-                left: 10.0, top: 30.0, bottom: 20.0, right: 10.0),
+                left: 10.0, top: 20.0, bottom: 10.0, right: 10.0),
                 child: Center(
             child: RichText(
               textAlign: TextAlign.center,
@@ -83,7 +74,13 @@ class ClubPlace extends StatelessWidget {
                     fontSize: 20),
               ),
             ))),
-        Expanded(
+        clubsWidget(context),
+      ],
+    )));
+  }
+
+  Widget clubsWidget(BuildContext context){
+    return Expanded(
           child: SearchBar<Place>(
               onSearch: search,
               onItemFound: (Place place, int index) {
@@ -92,39 +89,7 @@ class ClubPlace extends StatelessWidget {
                   elevation: 3,
                   child: new InkWell(
                     onTap: () {
-                      if (rol == "user") {
-                        songsData(place.id).then((songInfo){
-                          djData(place.id).then((djInfo){                        
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Club(
-                                  nameClub: place.pname,
-                                   img: place.img,
-                                    songs: songInfo,
-                                     street: place.pstreet,
-                                    djname: djInfo[0]["full_name"],)),
-                        );                       
-                        });
-                        });
-                      }
-                      if (rol == "dj") {
-                        songsData(place.id).then((songInfo){
-                          djData(place.id).then((djInfo){                        
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Club(
-                                  nameClub: place.pname,
-                                   img: place.img,
-                                    songs: songInfo,
-                                     street: place.pstreet,
-                                    djname: djInfo[0]["full_name"],)),
-                        );                       
-                        });
-                        });
-                    }
-                     songInfo = [];
+                      openClub(place, context);
                     },
                     child: Padding(
                       padding: EdgeInsets.all(0),
@@ -158,9 +123,44 @@ class ClubPlace extends StatelessWidget {
                 );
             }
               ),
-        )
-      ],
-    )));
+        );
+  }
+
+  openClub(place, context){
+
+    if (rol == "user") {
+                        songsData(place.id).then((songInfo){
+                          djData(place.id).then((djInfo){                        
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Club(
+                                  nameClub: place.pname,
+                                  idPlace: place.id,
+                                   img: place.img,
+                                    songs: songInfo,
+                                    djname: djInfo[0]["full_name"],)),
+                        );                       
+                        });
+                        });
+                      }
+                      if (rol == "dj") {
+                        songsData(place.id).then((songInfo){
+                          djData(place.id).then((djInfo){                        
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ClubDj(
+                                  nameClub: place.pname,
+                                   img: place.img,
+                                    songs: songInfo,
+                                    djname: djInfo[0]["full_name"],)),
+                        );                       
+                        });
+                        });
+                    }
+                     songInfo = [];
+
   }
 
   Widget name(post, index) {

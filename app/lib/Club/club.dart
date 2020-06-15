@@ -7,28 +7,24 @@ import 'package:url_launcher/url_launcher.dart';
 
 class Club extends StatelessWidget {
   String nameClub;
+  String idPlace;
   String img;
   List songs;
   String street;
   String djname;
 
-  Club(
-      {Key key,
-      this.nameClub,
-      this.img,
-      this.songs,
-      this.street,
-      this.djname})
+  Club({Key key, this.nameClub, this.idPlace, this.img, this.songs, this.street, this.djname})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(50, 50, 50, 1),
       appBar: new AppBar(
         backgroundColor: Color.fromRGBO(50, 50, 50, 1),
         title: new Text(
           nameClub,
-          style: new TextStyle(color: Colors.white),
+          style: new TextStyle(color: Colors.white, fontSize: 20.0),
         ),
         leading: new IconButton(
           icon: new Icon(Icons.arrow_back),
@@ -38,106 +34,64 @@ class Club extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: Container(
-          color: Color.fromRGBO(93, 93, 93, 1),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              card(context),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget card(BuildContext context) {
-    return Expanded(
-      child: Container(
-        color: Color.fromRGBO(51, 54, 117, 0.3),
-        child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Stack(children: <Widget>[
-            Align(
-              alignment: Alignment.centerRight,
-              child: Stack(
-                children: <Widget>[
-                  Padding(
-                      padding: const EdgeInsets.only(left: 0, top: 0),
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[genre()],
-                          ),
-                          Row(
-                            children: <Widget>[image(context)],
-                          ),
-                          Row(
-                            children: <Widget>[adress()],
-                          ),
-                          Row(
-                            children: <Widget>[song()],
-                          ),
-                          Row(
-                            children: <Widget>[listen()],
-                          ),
-                          Row(
-                            children: <Widget>[next(context)],
-                          ),
-                        ],
-                      ))
-                ],
-              ),
-            )
-          ]),
-        ),
-      ),
-    );
-  }
-
-  Widget genre() {
-    return Container(
-      child: Column(children: <Widget>[
-        Container(
-      padding: const EdgeInsets.only(left: 15.0, top: 20.0, bottom: 5.0),
-      child: RichText(
-        text: TextSpan(
-          text: "Genre: ",
-          children: <TextSpan>[
-            TextSpan(
-                text:  songs[0]["songgenre"],
-                style: TextStyle(fontWeight: FontWeight.normal)),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            djWidget(context),
+            genreWidget(context),
+            imageWidget(context),
+            buyNextSongWidget(context),
+            songsListTittleWidget(),
+            songsListWidget(),
           ],
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(255, 255, 255, 1),
-              fontSize: 15),
         ),
       ),
-    ),
-    Container(
-      padding: const EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
+    );
+  }
+
+  //header hace the genre, djnam, image and adress
+  Widget djWidget(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(left: 10.0, top: 20.0, bottom: 10.0),
       child: RichText(
         text: TextSpan(
           text: "Dj: ",
-          children: <TextSpan>[
-            TextSpan(
-                text: djname,
-                style: TextStyle(fontWeight: FontWeight.normal)),
-          ],
           style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Color.fromRGBO(255, 255, 255, 1),
-              fontSize: 15),
+              fontSize: 20),
+          children: <TextSpan>[
+            TextSpan(
+                text: djname, style: TextStyle(fontWeight: FontWeight.normal)),
+          ],
         ),
       ),
-    ),
-    ]));
+    );
   }
 
+  Widget genreWidget(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(left: 10.0, top: 0.0, bottom: 20.0),
+      child: RichText(
+        text: TextSpan(
+          text: "Genre: ",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Color.fromRGBO(255, 255, 255, 1),
+              fontSize: 20),
+          children: <TextSpan>[
+            TextSpan(
+                text: songs[0]["songgenre"],
+                style: TextStyle(fontWeight: FontWeight.normal)),
+          ],
+        ),
+      ),
+    );
+  }
 
-  Widget image(BuildContext context) {
+  Widget imageWidget(BuildContext context) {
     return Container(
         margin: const EdgeInsets.all(0),
         width: MediaQuery.of(context).size.width,
@@ -145,156 +99,93 @@ class Club extends StatelessWidget {
         child: Image.network(img, fit: BoxFit.fill));
   }
 
-  Widget adress() {
+  Widget buyNextSongWidget(BuildContext context) {
+    return Align(
+      alignment: Alignment.center,
+      child: Container(
+        padding: const EdgeInsets.only(
+            right: 15.0, left: 15.0, top: 10.0, bottom: 10.0),
+        margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+        decoration: BoxDecoration(
+            border:
+                Border.all(width: 2, color: Color.fromRGBO(200, 200, 200, 1.0)),
+            borderRadius: BorderRadius.all(Radius.circular(3.0)),
+            ),
+        child: new InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Buy(idPlace: idPlace)),
+            );
+          },
+          child: Text(
+            "Buy or vote for song",
+            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(200, 200, 200, 1.0)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget songsListTittleWidget() {
     return Container(
-      padding: const EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
+      padding: const EdgeInsets.only(left: 5.0),
       child: RichText(
         text: TextSpan(
-          text: street,
-          style:
-              TextStyle(color: Color.fromRGBO(255, 255, 255, 1), fontSize: 20),
+          text: "Club Playlist: ",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Color.fromRGBO(255, 255, 255, 1),
+              fontSize: 20),
         ),
       ),
     );
   }
 
-  Widget song() {
-    return Container(
-      child: Column(children: <Widget>[
-        Container(
-          padding: const EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
-          child: RichText(
-            text: TextSpan(
-              text: "Now playing",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(255, 255, 255, 1),
-                  fontSize: 20),
-            ),
-          ),
-        ),
- Container(
-        padding: const EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
-        child: Center(
-          child: RichText(
-            textAlign: TextAlign.left,
-            text: TextSpan(
-              text: songs[0]["songname"] + ' \n' + songs[0]["songartists"],
-              style: TextStyle(
-                  color: Color.fromRGBO(255, 255, 255, 1), fontSize: 12),
-            ),
-          ),
-        ))
-
-      ]),
-    );
-  }
-
-  Widget listen() {
-    return Container(
-      padding: const EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
-      child: RaisedButton(
-        onPressed: () {
-          launch(songs[0]["songnamelink"]);
-        },
-        child: Text('Listen in Spotify'),
-      ),
-    );
-  }
-
-  Widget next(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(left: 15.0, bottom: 5.0),
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
-          ),
-          RaisedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Buy()),
-              );
-            },
-            child: Text('Buy or vote for song'),
-          ),
-        ],
-      ),
-    );
-  }
-
- Widget list(BuildContext context) {
+  Widget songsListWidget() {
     return Expanded(
-      child: ListView.builder(
-        itemCount: songs.length,
-        itemBuilder: (context, index) {
-          return Container(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-            height: 60,
-            width: double.maxFinite,
-            child: new InkWell(
-              onTap: () { 
-                launch(songs[index]['songnamelink']);
-              },
-              child: Card(
-                color: Color.fromRGBO(51, 54, 117, 0.3),
-                elevation: 3,
-                child: Padding(
-                  padding: EdgeInsets.all(0),
-                  child: Stack(children: <Widget>[
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                              padding: const EdgeInsets.only(left: 0, top: 0),
-                              child: Column(
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      songList(songs[index + 1])
-                                    ],
-                                  ),
-                                ],
-                              ))
-                        ],
+      child: Container(
+        margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+        decoration: BoxDecoration(
+                    border: Border(
+                        top: BorderSide(
+                            width: 2,
+                            color: Color.fromRGBO(255, 255, 255, 1.0))),
+                  ),
+        child: ListView.builder(
+            itemCount: songs.length,
+            padding: const EdgeInsets.all(8),
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Container(                  
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      RichText(
+                        textAlign: TextAlign.left,
+                        text: TextSpan(
+                          text: songs[index]["songname"] +
+                              ' \n' +
+                              songs[index]["songartists"],
+                          style: TextStyle(
+                              color: Color.fromRGBO(255, 255, 255, 1),
+                              fontSize: 15),
+                        ),
                       ),
-                    )
-                  ]),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
+                      SizedBox(
+                                width: 50, // specific value
+                                child: RaisedButton(
+                                  color: Color.fromRGBO(0, 212, 90, 1),
+                                  padding: const EdgeInsets.only(
+                                      left: 5.0, right: 5.0),
+                                  onPressed: () {
+                                    launch(songs[index]["songnamelink"]);
+                                  },
+                                  child: Icon(Icons.play_arrow),
+                                )),
+                    ],
+                  ));
+            })));
   }
-
-Widget songList(data) {
-  return Container(
-    padding: const EdgeInsets.only(left: 15.0, top: 10.0, bottom: 10.0),
-    child: Row(
-      children: <Widget>[        
-      RichText(
-          text: TextSpan(
-            text: "${data['songname']} - ",
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Color.fromRGBO(255, 255, 255, 1),
-                fontSize: 15),
-          ),
-        ),
-        RichText(
-          text: TextSpan(
-            text: "${data['songartists']} / ",
-            style: TextStyle(
-                color: Color.fromRGBO(255, 255, 255, 1),
-                fontSize: 15),
-          ),
-        ),
-      ],
-    ),
-  );
-}
 }

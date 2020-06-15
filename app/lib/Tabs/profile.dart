@@ -6,7 +6,7 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart';
 
 var songsData = SongsData.getData;
 
@@ -44,11 +44,11 @@ class _ProfileTabs extends State<ProfileTabs> {
   List songs;
   Future<File> imageFile;
 
-   getImage(ImageSource source) {
+  /* getImage(ImageSource source) {
      setState(() {
        imageFile = ImagePicker.pickImage(source: source);
      });
-   }
+   }*/
 
    playSong(songname) async {
   final response = await http
@@ -135,7 +135,7 @@ class _ProfileTabs extends State<ProfileTabs> {
         ), //       <--- BoxDecoration here
         child: new InkWell(
           onTap: () {
-             getImage(ImageSource.gallery);
+            // getImage(ImageSource.gallery);
           },
           child: Text(
             "Change profile image",
